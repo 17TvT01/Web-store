@@ -2,6 +2,18 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Backend API
+
+The `backend` folder contains a small [Flask](https://flask.palletsprojects.com/) application that
+exposes product data from a MySQL database. Install dependencies and run the API with:
+
+```
+pip install -r backend/requirements.txt
+python backend/app.py
+```
+
+The React app fetches product information from `http://localhost:5000/api/products`.
+
 ## Available Scripts
 
 In the project directory, you can run:
