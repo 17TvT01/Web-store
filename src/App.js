@@ -6,6 +6,7 @@ import LoginModal from './components/Auth/LoginModal';
 import RegisterModal from './components/Auth/RegisterModal';
 import DineInConfirmationModal from './components/Confirmation/DineInConfirmationModal';
 import TakeawayConfirmationModal from './components/Confirmation/TakeawayConfirmationModal';
+import ProductList from './components/ProductList/ProductList';
 
 function App() {
   const [showCart, setShowCart] = useState(false);
@@ -82,6 +83,8 @@ function App() {
         onLoginClick={() => setShowLogin(true)}
         onRegisterClick={() => setShowRegister(true)}
       />
+
+      <ProductList />
 
       {/* Layout hiển thị tương ứng */}
       {showCart && <Cart 
