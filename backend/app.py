@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import mysql.connector
 from mysql.connector import Error
 
@@ -17,11 +17,33 @@ def get_connection():
 
 @app.route("/api/products")
 def list_products():
-    """Return all products."""
+    """Return products optionally filtered by query parameters."""
+    min_price = request.args.get("min_price", type=float)
+    max_price = request.args.get("max_price", type=float)
+    key = request.args.get("key")
+
     try:
         conn = get_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT id, name, price, image FROM products")
+
+        query = "SELECT id, name, price, image FROM products"
+        conditions = []
+        params = []
+
+        if min_price is not None:
+            conditions.append("price >= %s")
+            params.append(min_price)
+        if max_price is not None:
+            conditions.append("price <= %s")
+            params.append(max_price)
+        if key:
+            conditions.append("name LIKE %s")
+            params.append(f"%{key}%")
+
+        if conditions:
+            query += " WHERE " + " AND ".join(conditions)
+
+        cursor.execute(query, params)
         products = cursor.fetchall()
         return jsonify(products)
     except Error as e:
